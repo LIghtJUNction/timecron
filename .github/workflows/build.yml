@@ -28,21 +28,12 @@ jobs:
       run: |
         tar -czvf timecron-android-arm64-${{ github.event.inputs.version }}.tar.gz timecron
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ github.event.inputs.version }}
-        release_name: Release ${{ github.event.inputs.version }}
-        draft: false
-        prerelease: false
-
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./timecron-android-arm64-${{ github.event.inputs.version }}.tar.gz
-        asset_name: timecron-android-arm64-${{ github.event.inputs.version }}.tar.gz
-        asset_content_type: application/gzip
+        files: |
+          timecron-android-arm64-${{ github.event.inputs.version }}.tar.gz
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
