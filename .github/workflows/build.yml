@@ -1,0 +1,48 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.16
+
+    - name: Build for Android ARM64
+      run: |
+        GOOS=android GOARCH=arm64 go build -o timecron main.go
+
+    - name: Archive build
+      run: |
+        tar -czvf timecron-android-arm64-${{ github.event.inputs.version }}.tar.gz timecron
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.event.inputs.version }}
+        release_name: Release ${{ github.event.inputs.version }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./timecron-android-arm64-${{ github.event.inputs.version }}.tar.gz
+        asset_name: timecron-android-arm64-${{ github.event.inputs.version }}.tar.gz
+        asset_content_type: application/gzip
