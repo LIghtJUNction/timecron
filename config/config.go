@@ -56,14 +56,14 @@ func ReadConfigFileToJson() (gjson.Result, error) {
 		fmt.Println("配置文件读取失败")
 		/* 配置文件不存在,创建json文件 */
 		str := fmt.Sprintf(`{
-			"name": "timecron",
-			"username":"admin",
-			"email":"xnkyn@qq.com",
+			"name": "UniTimecron",
+			"username":"UniTimecron",
+			"email":"LIghtJUNction.me@gmail.com",
 			"password":"21232f297a57a5a743894a0e4a801fc3",
 			"task": [
 				{
 				"createtime":"%s",
-				"name": "测试任务",
+				"name": "密码是admin，这是一个测试任务",
 				"type": "1",
 				"exec": "pwd",
 				"isrun": "2",

@@ -4,7 +4,6 @@ import (
 	"log"
 	"os/exec"
 	"runtime"
-
 	"golang.org/x/text/encoding/simplifiedchinese"
 )
 
