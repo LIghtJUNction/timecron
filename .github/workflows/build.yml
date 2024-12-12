@@ -22,18 +22,18 @@ jobs:
 
     - name: Build for Android ARM64
       run: |
-        GOOS=android GOARCH=arm64 go build -o timecron main.go
+        GOOS=android GOARCH=arm64 go build -o UniTimecron main.go
 
     - name: Archive build
       run: |
-        tar -czvf timecron-android-arm64-${{ github.event.inputs.version }}.tar.gz timecron
+        zip UniTimecron-${{ github.event.inputs.version }}.zip UniTimecron
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ github.event.inputs.version }}
         files: |
-          timecron-android-arm64-${{ github.event.inputs.version }}.tar.gz
+          UniTimecron-${{ github.event.inputs.version }}.zip
         generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
